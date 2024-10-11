@@ -17,7 +17,8 @@ public class Background extends GameObject{
         this.moveY = 0;
 
         this.speedY = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
-        this.image = new Image(props.getProperty("backgroundImage"));
+        this.image = new Image(props.getProperty("backgroundImage.sunny"));
+
         this.WINDOW_HEIGHT = Integer.parseInt(props.getProperty("window.height"));
     }
 

@@ -9,15 +9,15 @@ public class Weather {
         this.START_FRAME = startFrame;
     }
 
-    public boolean isIS_RAINY() {
+    public boolean getIsRainy() {
         return IS_RAINY;
     }
 
-    public int getSTART_FRAME() {
+    public int getStartFrame() {
         return START_FRAME;
     }
 
-    public int getEND_FRAME() {
+    public int getEndFrame() {
         return END_FRAME;
     }
 }
