@@ -10,14 +10,19 @@ import java.util.Properties;
 public class Background extends GameObject{
 
     private final int WINDOW_HEIGHT;
+    private boolean isRainy;
+    private Image imageRainy;
+    private Image imageSunny;
 
-    public Background(int x, int y, Properties props) {
+    public Background(int x, int y, boolean initialRain, Properties props) {
         this.x = x;
         this.y = y;
         this.moveY = 0;
 
         this.speedY = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
-        this.image = new Image(props.getProperty("backgroundImage.sunny"));
+        this.imageSunny = new Image(props.getProperty("backgroundImage.sunny"));
+        this.imageRainy = new Image(props.getProperty("backgroundImage.raining"));
+        isRainy = initialRain;
 
         this.WINDOW_HEIGHT = Integer.parseInt(props.getProperty("window.height"));
     }
@@ -29,6 +34,12 @@ public class Background extends GameObject{
     public void update(Input input, Background background) {
         if(input != null) {
             adjustToInputMovement(input);
+        }
+
+        if (isRainy) {
+            image = imageRainy;
+        } else {
+            image = imageSunny;
         }
 
         move();
@@ -48,6 +59,13 @@ public class Background extends GameObject{
      */
     public void move() {
         this.y += speedY * moveY;
+    }
+
+    /**
+     * Switch the background between rainy and sunny
+     */
+    public void switchWeather() {
+        isRainy = !isRainy;
     }
 
     /**

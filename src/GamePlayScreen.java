@@ -15,6 +15,7 @@ public class GamePlayScreen extends Screen{
     private float coinFramesActive;
 
     private int currFrame = 0;
+    private int[] rainIntervals;
 
     // game objects
     private Taxi taxi;
@@ -52,8 +53,10 @@ public class GamePlayScreen extends Screen{
         this.MSG_PROPS = msgProps;
 
         // read game objects from file and weather file and populate the game objects and weather conditions
-        ArrayList<String[]> lines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.objectsFile"));
-        populateGameObjects(lines);
+        ArrayList<String[]> objectLines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.objectsFile"));
+        ArrayList<String[]> weatherLines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.objectsFile"));
+        populateGameObjects(objectLines);
+        populateWeather(weatherLines);
 
         this.TARGET = Float.parseFloat(gameProps.getProperty("gamePlay.target"));
         this.MAX_FRAMES = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
@@ -81,21 +84,45 @@ public class GamePlayScreen extends Screen{
     }
 
     /**
+     * Populate the weathers from the lines read from the weather file.
+     * @param lines list of lines read from the game objects file. lines are processed into String arrays using comma as
+     *             delimiter.
+     */
+    private void populateWeather(ArrayList<String[]> lines) {
+
+        int numberOfIntervals = lines.size();
+        rainIntervals = new int[numberOfIntervals];
+
+        boolean initialRain;
+        if (lines.get(0)[0].equals(WeatherType.RAINING.name())){
+            initialRain = true;
+        } else {
+            initialRain = false;
+        }
+
+        int i = 0;
+        for(String[] lineElement: lines) {
+            rainIntervals[i] = Integer.parseInt(lineElement[2]);
+            i++;
+        }
+
+        // two background images stacked in y-axis are used to create a scrolling effect
+        background1 = new Background(
+                Integer.parseInt(GAME_PROPS.getProperty("window.width")) / 2,
+                Integer.parseInt(GAME_PROPS.getProperty("window.height")) / 2, initialRain,
+                GAME_PROPS);
+        background2 = new Background(
+                Integer.parseInt(GAME_PROPS.getProperty("window.width")) / 2,
+                -1 * Integer.parseInt(GAME_PROPS.getProperty("window.height")) / 2, initialRain,
+                GAME_PROPS);
+    }
+
+    /**
      * Populate the game objects from the lines read from the game objects file.
      * @param lines list of lines read from the game objects file. lines are processed into String arrays using comma as
      *             delimiter.
      */
     private void populateGameObjects(ArrayList<String[]> lines) {
-
-        // two background images stacked in y-axis are used to create a scrolling effect
-        background1 = new Background(
-                Integer.parseInt(GAME_PROPS.getProperty("window.width")) / 2,
-                Integer.parseInt(GAME_PROPS.getProperty("window.height")) / 2,
-                GAME_PROPS);
-        background2 = new Background(
-                Integer.parseInt(GAME_PROPS.getProperty("window.width")) / 2,
-                -1 * Integer.parseInt(GAME_PROPS.getProperty("window.height")) / 2,
-                GAME_PROPS);
 
         // Since you haven't learned Lists in Java, we have to use two for loops to iterate over the lines.
         int passengerCount = 0;
@@ -148,6 +175,13 @@ public class GamePlayScreen extends Screen{
     @Override
     public boolean update(Input input) {
         currFrame++;
+
+        for (int interval : rainIntervals) {
+            if (currFrame == interval) {
+                background1.switchWeather();
+                background2.switchWeather();
+            }
+        }
 
         background1.update(input, background2);
         background2.update(input, background1);
