@@ -4,5 +4,6 @@
 public enum GameObjectType {
     TAXI,
     PASSENGER,
-    COIN
+    COIN,
+
 }
