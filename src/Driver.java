@@ -9,12 +9,14 @@ public class Driver extends GameObject{
     private final int SPEED_X;
     private boolean isMovingY;
     private boolean isMovingX;
+    private boolean isOutside;
 
 
     public Driver(int x, int y, Properties props) {
         this.x = x;
         this.y = y;
         this.moveY = 0;
+        isOutside = false;
 
         this.SPEED_X = Integer.parseInt(props.getProperty("gameObjects.driver.walkSpeedX"));
         this.speedY = Integer.parseInt(props.getProperty("gameObjects.driver.walkSpeedY"));
@@ -41,7 +43,9 @@ public class Driver extends GameObject{
             adjustToInputMovement(input);
         }
 
-        draw();
+        if (isOutside) {
+            draw();
+        }
     }
 
     /**

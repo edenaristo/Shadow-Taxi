@@ -269,15 +269,66 @@ public class GamePlayScreen extends Screen{
             for(InvinciblePower invinciblePower: invinciblePowers) {
                 invinciblePower.update(input);
                 invinciblePower.collide(taxi);
-
-//                // check if there's active coin and finding the coin with maximum ttl
-//                int framesActive = invinciblePower.getFramesActive();
-//                if(coinPower.getIsActive() && minFramesActive > framesActive) {
-//                    minFramesActive = framesActive;
-//                }
-            }
-//            coinFramesActive = minFramesActive;
+                /// invinciblePower.collide(driver);
         }
+
+//        // COLLISION LOGIC: make a double loop for each of the gameobjects
+//
+//        // Driver
+//        driver.collide(taxi);
+//
+//        // Taxi
+//        for (EnemyCar enemyCar : enemyCars) {
+//            taxi.collide(enemyCar);
+//        }
+//        for (Car car : cars) {
+//            taxi.collide(car);
+//        }
+//
+        // Fireball
+        for (Fireball fireball : fireballs) {
+            fireball.collide(taxi);
+            fireball.collide(driver);
+            for (EnemyCar enemyCar : enemyCars) {
+                fireball.collide(enemyCar);
+            }
+            for (Car car : cars) {
+                fireball.collide(car);
+            }
+            for (Passenger passenger : passengers) {
+                fireball.collide(passenger);
+            }
+        }
+//
+//        // Car
+//        for (Car car : cars) {
+//            car.collide(taxi);
+//            car.collide(driver);
+//            for (EnemyCar enemyCar : enemyCars) {
+//                car.collide(enemyCar);
+//            }
+//            for (Car car : cars) {
+//                car.collide(car);
+//            }
+//            for (Passenger passenger : passengers) {
+//                car.collide(passenger);
+//            }
+//        }
+//
+//        // EnemyCar
+//        for (EnemyCar enemyCar : enemyCars) {
+//            enemyCar.collide(taxi);
+//            enemyCar.collide(driver);
+//            for (EnemyCar enemyCar : enemyCars) {
+//                enemyCar.collide(enemyCar);
+//            }
+//            for (Car car : cars) {
+//                enemyCar.collide(car);
+//            }
+//            for (Passenger passenger : passengers) {
+//                enemyCar.collide(passenger);
+//            }
+//        }
 
         displayInfo();
 

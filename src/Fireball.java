@@ -9,6 +9,7 @@ public class Fireball extends GameObject{
     private int taxiSpeed;
     private float damage;
     private int speedY;
+    private boolean hasCollided;
 
     public Fireball(int x, int y, Properties props) {
         this.x = x;
@@ -52,8 +53,50 @@ public class Fireball extends GameObject{
      * @param input The current mouse/keyboard input.
      */
     public void update(Input input) {
+        // check if out of bounds
+        if (x < 0) {
+            hasCollided = true;
+        }
         adjustToInputMovement(input);
         move();
-        draw();
+
+        if (!hasCollided) {
+            draw();
+        }
+    }
+
+    /*
+     * check for collision with taxi
+     */
+    public void collide(Taxi taxi) {
+        taxi.hit(damage);
+    }
+
+    /*
+     * check for collision with driver
+     */
+    public void collide(Driver driver) {
+        driver.hit(damage);
+    }
+
+    /*
+     * check for collision with enemyCar
+     */
+    public void collide(EnemyCar enemyCar) {
+        enemyCar.hit(damage);
+    }
+
+    /*
+     * check for collision with car
+     */
+    public void collide(Car car) {
+
+    }
+
+    /*
+     * check for collision with passenger
+     */
+    public void collide(Passenger passenger) {
+
     }
 }
