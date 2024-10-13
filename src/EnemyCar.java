@@ -43,4 +43,11 @@ public class EnemyCar extends Car {
     public boolean canShootFireball() {
         return MiscUtils.canSpawn(300);
     }
+
+    /**
+     * Shoot fireball by spawning one
+     */
+    public Fireball shootFireball(Properties props) {
+        return new Fireball(x, y, props);
+    }
 }

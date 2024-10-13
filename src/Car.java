@@ -29,8 +29,6 @@ public class  Car extends GameObject{
         // randomly assign y position
         this.y = MiscUtils.selectAValue(0, Integer.parseInt(props.getProperty("window.height")));
 
-        this.moveY = 0;
-
         health = Float.parseFloat(props.getProperty("gameObjects.otherCar.health"));
         damage = Float.parseFloat(props.getProperty("gameObjects.otherCar.damage"));
         radius = Float.parseFloat(props.getProperty("gameObjects.otherCar.radius"));
@@ -55,7 +53,7 @@ public class  Car extends GameObject{
      * Move the GameObject object in the y-direction based on the speedY attribute.
      */
     public void move() {
-        this.y += (taxiSpeed * moveY) - speedY;
+        this.y +=  - speedY + (taxiSpeed * moveY);
     }
 
     /**
@@ -63,9 +61,9 @@ public class  Car extends GameObject{
      * @param input The current mouse/keyboard input.
      */
     public void adjustToInputMovement(Input input) {
-        if (input.wasPressed(Keys.UP)) {
+        if (input.isDown(Keys.UP)) {
             moveY = 1;
-        }  else if(input.wasReleased(Keys.UP)) {
+        }  else  {
             moveY = 0;
         }
     }
@@ -76,9 +74,7 @@ public class  Car extends GameObject{
      * @param input The current mouse/keyboard input.
      */
     public void update(Input input) {
-        if(input != null) {
-            adjustToInputMovement(input);
-        }
+        adjustToInputMovement(input);
         move();
         draw();
     }

@@ -26,6 +26,7 @@ public class GamePlayScreen extends Screen{
     private InvinciblePower[] invinciblePowers;
     private ArrayList<Car> cars;
     private ArrayList<EnemyCar> enemyCars;
+    private ArrayList<Fireball> fireballs;
     private Background background1;
     private Background background2;
 
@@ -64,6 +65,7 @@ public class GamePlayScreen extends Screen{
         populateBackground(weatherLines);
         cars = new ArrayList<>();
         enemyCars = new ArrayList<>();
+        fireballs = new ArrayList<>();
 
         this.TARGET = Float.parseFloat(gameProps.getProperty("gamePlay.target"));
         this.MAX_FRAMES = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
@@ -236,8 +238,14 @@ public class GamePlayScreen extends Screen{
         for (EnemyCar enemyCar : enemyCars) {
             enemyCar.update(input);
             if (enemyCar.canShootFireball()){
-
+                Fireball fireball = enemyCar.shootFireball(GAME_PROPS);
+                fireballs.add(fireball);
             }
+        }
+
+        // update fireballs
+        for (Fireball fireball : fireballs) {
+            fireball.update(input);
         }
 
         // update coins
