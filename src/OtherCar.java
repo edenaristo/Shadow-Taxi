@@ -6,6 +6,8 @@ import bagel.Keys;
 import java.util.Properties;
 
 public class OtherCar extends Car{
+    private final int taxiSpeed;
+
     public OtherCar(Properties props) {
 
         // randomly assign road lane
@@ -29,11 +31,13 @@ public class OtherCar extends Car{
         health = Float.parseFloat(props.getProperty("gameObjects.otherCar.health"));
         damage = Float.parseFloat(props.getProperty("gameObjects.otherCar.damage"));
         radius = Float.parseFloat(props.getProperty("gameObjects.otherCar.radius"));
+        taxiSpeed = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
+
         // assign the image randomly between 2 images
         image = new Image((String.format(props.getProperty("gameObjects.otherCar.image"), MiscUtils.getRandomInt(0, Integer.parseInt(props.getProperty("gameObjects.otherCar.types"))) + 1)));
 
         // randomly assign the speed of the car
-        speedY = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
+        speedY = MiscUtils.getRandomInt(Integer.parseInt(props.getProperty("gameObjects.otherCar.minSpeedY")), Integer.parseInt(props.getProperty("gameObjects.otherCar.maxSpeedY")));
 
     }
 
@@ -48,7 +52,7 @@ public class OtherCar extends Car{
      * Move the GameObject object in the y-direction based on the speedY attribute.
      */
     public void move() {
-        this.y += speedY * moveY;
+        this.y += (taxiSpeed * moveY) - speedY;
     }
 
     /**
