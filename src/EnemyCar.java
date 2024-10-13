@@ -5,31 +5,16 @@ import bagel.Keys;
 
 import java.util.Properties;
 
-public class EnemyCar extends Car{
-    /**
-     * Draw the GameObject object into the screen.
-     */
-    public void draw() {
-        image.draw(x, y);
-    }
+public class EnemyCar extends Car {
 
-    /**
-     * Move the GameObject object in the y-direction based on the speedY attribute.
-     */
-    public void move() {
-        this.y += speedY * moveY;
-    }
+    public EnemyCar(Properties props) {
+        super(props);
+        health = Float.parseFloat(props.getProperty("gameObjects.enemyCar.health"));
+        damage = Float.parseFloat(props.getProperty("gameObjects.enemyCar.damage"));
+        radius = Float.parseFloat(props.getProperty("gameObjects.enemyCar.radius"));
 
-    /**
-     * Adjust the movement direction in y-axis of the GameObject based on the keyboard input.
-     * @param input The current mouse/keyboard input.
-     */
-    public void adjustToInputMovement(Input input) {
-        if (input.wasPressed(Keys.UP)) {
-            moveY = 1;
-        }  else if(input.wasReleased(Keys.UP)) {
-            moveY = 0;
-        }
+        taxiSpeed = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
+        image = new Image(props.getProperty("gameObjects.enemyCar.image"));
     }
 
     /**
@@ -38,12 +23,24 @@ public class EnemyCar extends Car{
      * @param input The current mouse/keyboard input.
      */
     public void update(Input input) {
-        // if the taxi has coin power, apply the effect of the coin on the priority of the passenger
-        // (See the logic in TravelPlan class)
         if(input != null) {
             adjustToInputMovement(input);
         }
-
+        move();
         draw();
+    }
+
+    /**
+     * Check if it is valid to spawn car using a randomized number
+     */
+    public static boolean canSpawnCar() {
+        return MiscUtils.canSpawn(400);
+    }
+
+    /**
+     * Check if the enemy car can shoot fireball
+     */
+    public boolean canShootFireball() {
+        return MiscUtils.canSpawn(300);
     }
 }

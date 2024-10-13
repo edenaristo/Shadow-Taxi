@@ -24,8 +24,8 @@ public class GamePlayScreen extends Screen{
     private Passenger[] passengers;
     private Coin[] coins;
     private InvinciblePower[] invinciblePowers;
-    private Car[] Cars;
     private ArrayList<Car> cars;
+    private ArrayList<EnemyCar> enemyCars;
     private Background background1;
     private Background background2;
 
@@ -63,6 +63,7 @@ public class GamePlayScreen extends Screen{
         populateGameObjects(objectLines);
         populateBackground(weatherLines);
         cars = new ArrayList<>();
+        enemyCars = new ArrayList<>();
 
         this.TARGET = Float.parseFloat(gameProps.getProperty("gamePlay.target"));
         this.MAX_FRAMES = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
@@ -206,17 +207,17 @@ public class GamePlayScreen extends Screen{
         background1.update(input, background2);
         background2.update(input, background1);
 
-        // spawning process for other car
+        // spawning process for car
         if (Car.canSpawnCar()) {
-            OtherCar otherCar = new OtherCar(GAME_PROPS);
-            cars.add(otherCar);
+            Car car = new Car(GAME_PROPS);
+            cars.add(car);
         }
 
-        // spawning process for enemy car
-//        if (Car.canSpawnCar()) {
-//            OtherCar otherCar = new OtherCar(GAME_PROPS);
-//        }
-        // cars.add(enemyCar);
+        //spawning process for enemy car
+        if (EnemyCar.canSpawnCar()) {
+            EnemyCar enemyCar = new EnemyCar(GAME_PROPS);
+            enemyCars.add(enemyCar);
+        }
 
         for(Passenger passenger: passengers) {
             passenger.updateWithTaxi(input, taxi);
@@ -229,6 +230,14 @@ public class GamePlayScreen extends Screen{
         // update cars
         for (Car car : cars) {
             car.update(input);
+        }
+
+        // update enemy cars
+        for (EnemyCar enemyCar : enemyCars) {
+            enemyCar.update(input);
+            if (enemyCar.canShootFireball()){
+
+            }
         }
 
         // update coins
