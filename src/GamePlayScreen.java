@@ -1,5 +1,6 @@
 import bagel.Font;
 import bagel.Input;
+import java.util.ArrayList;
 
 import java.util.*;
 
@@ -23,6 +24,8 @@ public class GamePlayScreen extends Screen{
     private Passenger[] passengers;
     private Coin[] coins;
     private InvinciblePower[] invinciblePowers;
+    private Car[] Cars;
+    private ArrayList<Car> cars;
     private Background background1;
     private Background background2;
 
@@ -56,9 +59,10 @@ public class GamePlayScreen extends Screen{
 
         // read game objects from file and weather file and populate the game objects and weather conditions
         ArrayList<String[]> objectLines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.objectsFile"));
-        ArrayList<String[]> weatherLines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.objectsFile"));
+        ArrayList<String[]> weatherLines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.weatherFile"));
         populateGameObjects(objectLines);
         populateBackground(weatherLines);
+        cars = new ArrayList<>();
 
         this.TARGET = Float.parseFloat(gameProps.getProperty("gamePlay.target"));
         this.MAX_FRAMES = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
@@ -98,8 +102,10 @@ public class GamePlayScreen extends Screen{
         boolean initialRain;
         if (lines.get(0)[0].equals(WeatherType.RAINING.name())){
             initialRain = true;
-        } else {
+        } else if (lines.get(0)[0].equals(WeatherType.SUNNY.name())){
             initialRain = false;
+        } else {
+            initialRain = true;
         }
 
         int i = 0;
@@ -200,6 +206,18 @@ public class GamePlayScreen extends Screen{
         background1.update(input, background2);
         background2.update(input, background1);
 
+        // spawning process for other car
+        if (Car.canSpawnCar()) {
+            OtherCar otherCar = new OtherCar(GAME_PROPS);
+            cars.add(otherCar);
+        }
+
+        // spawning process for enemy car
+//        if (Car.canSpawnCar()) {
+//            OtherCar otherCar = new OtherCar(GAME_PROPS);
+//        }
+        // cars.add(enemyCar);
+
         for(Passenger passenger: passengers) {
             passenger.updateWithTaxi(input, taxi);
         }
@@ -208,6 +226,12 @@ public class GamePlayScreen extends Screen{
         driver.update(input);
         totalEarnings = taxi.calculateTotalEarnings();
 
+        // update cars
+        for (Car car : cars) {
+            car.update(input);
+        }
+
+        // update coins
         if(coins.length > 0) {
             int minFramesActive = coins[0].getMaxFrames();
             for(Coin coinPower: coins) {
@@ -223,6 +247,7 @@ public class GamePlayScreen extends Screen{
             coinFramesActive = minFramesActive;
         }
 
+        // update invincibility
         if(invinciblePowers.length > 0) {
             for(InvinciblePower invinciblePower: invinciblePowers) {
                 invinciblePower.update(input);

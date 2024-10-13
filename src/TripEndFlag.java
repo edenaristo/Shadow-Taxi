@@ -20,18 +20,6 @@ public class TripEndFlag extends GameObject {
         this.image = new Image(props.getProperty("gameObjects.tripEndFlag.image"));
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
     /**
      * Move the object in y direction according to the keyboard input, and render the trip flag image.
      * @param input The current mouse/keyboard input.

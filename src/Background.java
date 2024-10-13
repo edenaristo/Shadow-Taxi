@@ -50,10 +50,6 @@ public class Background extends GameObject{
         }
     }
 
-    public int getY() {
-        return y;
-    }
-
     /**
      * Move the GameObject object in the y-direction based on the speedY attribute.
      */

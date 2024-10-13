@@ -1,10 +1,42 @@
 import bagel.Input;
 import bagel.Keys;
 
+import java.util.Random;
+
 /**
  * This class contains miscellaneous utility methods.
  */
 public class MiscUtils {
+
+    /**
+     * Check if the game should spawn a new invader.
+     * @param invRate The rate of invader spawn.
+     * @return true if the game should spawn a new invader, false otherwise.
+     */
+    public static boolean canSpawn(int invRate) {
+        int rnd = new Random().nextInt(1000) + 1; // Random delay between 1 and 10 seconds
+        return rnd % invRate == 0;
+    }
+
+    /**
+     * Get a random integer between min and max.
+     * @param min The minimum value.
+     * @param max The maximum value.
+     * @return A random integer between min and max.
+     */
+    public static int getRandomInt(int min, int max) {
+        return new Random().nextInt(max - min) + min;
+    }
+
+    /**
+     * Select a value randomly between val1 and val2.
+     * @param val1 The first value.
+     * @param val2 The second value.
+     * @return A random value between val1 and val2.
+     */
+    public static int selectAValue(int val1, int val2) {
+        return new Random().nextBoolean() ? val1 : val2;
+    }
 
     /**
      * Determine the key pressed by the user.
