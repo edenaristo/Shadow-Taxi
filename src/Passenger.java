@@ -10,6 +10,7 @@ public class Passenger extends GameObject{
     private final int TAXI_DETECT_radius;
     private final Properties PROPS;
     private final TravelPlan TRAVEL_PLAN;
+    private final boolean hasUmbrella;
 
     private final int WALK_SPEED_X;
     private final int WALK_speedY;
@@ -22,11 +23,12 @@ public class Passenger extends GameObject{
 
     private boolean reachedFlag;
 
-    public Passenger(int x, int y, int priority, int endX, int distanceY, Properties props) {
+    public Passenger(int x, int y, int priority, int endX, int distanceY, boolean hasUmbrella, Properties props) {
 
         this.WALK_SPEED_X = Integer.parseInt(props.getProperty("gameObjects.passenger.walkSpeedX"));
         this.WALK_speedY = Integer.parseInt(props.getProperty("gameObjects.passenger.walkSpeedY"));
         this.PROPS = props;
+        this.hasUmbrella = hasUmbrella;
 
         this.TRAVEL_PLAN = new TravelPlan(endX, distanceY, priority, props);
         this.TAXI_DETECT_radius = Integer.parseInt(props.getProperty("gameObjects.passenger.taxiDetectRadius"));
@@ -39,14 +41,6 @@ public class Passenger extends GameObject{
 
         this.speedY = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
         this.image = new Image(props.getProperty("gameObjects.passenger.image"));
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public void setY(int y) {

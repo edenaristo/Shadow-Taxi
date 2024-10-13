@@ -29,24 +29,12 @@ public class Taxi extends GameObject{
         this.radius = Float.parseFloat(props.getProperty("gameObjects.taxi.radius"));
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
     public boolean isMovingY() {
         return isMovingY;
     }
 
     public boolean isMovingX() {
         return isMovingX;
-    }
-
-    public float getRadius() {
-        return radius;
     }
 
     /**

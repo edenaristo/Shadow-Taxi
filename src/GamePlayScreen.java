@@ -19,8 +19,10 @@ public class GamePlayScreen extends Screen{
 
     // game objects
     private Taxi taxi;
+    private Driver driver;
     private Passenger[] passengers;
     private Coin[] coins;
+    private InvinciblePower[] invinciblePowers;
     private Background background1;
     private Background background2;
 
@@ -56,7 +58,7 @@ public class GamePlayScreen extends Screen{
         ArrayList<String[]> objectLines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.objectsFile"));
         ArrayList<String[]> weatherLines = IOUtils.readCommaSeperatedFile(gameProps.getProperty("gamePlay.objectsFile"));
         populateGameObjects(objectLines);
-        populateWeather(weatherLines);
+        populateBackground(weatherLines);
 
         this.TARGET = Float.parseFloat(gameProps.getProperty("gamePlay.target"));
         this.MAX_FRAMES = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
@@ -88,7 +90,7 @@ public class GamePlayScreen extends Screen{
      * @param lines list of lines read from the game objects file. lines are processed into String arrays using comma as
      *             delimiter.
      */
-    private void populateWeather(ArrayList<String[]> lines) {
+    private void populateBackground(ArrayList<String[]> lines) {
 
         int numberOfIntervals = lines.size();
         rainIntervals = new int[numberOfIntervals];
@@ -127,31 +129,39 @@ public class GamePlayScreen extends Screen{
         // Since you haven't learned Lists in Java, we have to use two for loops to iterate over the lines.
         int passengerCount = 0;
         int coinCount = 0;
+        int invinciblePowerCount = 0;
         for(String[] lineElement: lines) {
             if(lineElement[0].equals(GameObjectType.PASSENGER.name())) {
                 passengerCount++;
             } else if(lineElement[0].equals(GameObjectType.COIN.name())) {
                 coinCount++;
+            } else if(lineElement[0].equals(GameObjectType.INVINCIBLE_POWER.name())) {
+                invinciblePowerCount++;
             }
         }
         passengers = new Passenger[passengerCount];
         coins = new Coin[coinCount];
+        invinciblePowers = new InvinciblePower[invinciblePowerCount];
 
         // process each line in the file
         int passenger_idx = 0;
         int coin_idx = 0;
+        int invinciblePower_idx = 0;
         for(String[] lineElement: lines) {
             int x = Integer.parseInt(lineElement[1]);
             int y = Integer.parseInt(lineElement[2]);
 
             if(lineElement[0].equals(GameObjectType.TAXI.name())) {
                 taxi = new Taxi(x, y, passengerCount, this.GAME_PROPS);
+            } else if(lineElement[0].equals(GameObjectType.DRIVER.name())) {
+                driver = new Driver(x, y, this.GAME_PROPS);
             } else if(lineElement[0].equals(GameObjectType.PASSENGER.name())) {
                 int priority = Integer.parseInt(lineElement[3]);
                 int travelEndX = Integer.parseInt(lineElement[4]);
                 int travelEndY = Integer.parseInt(lineElement[5]);
+                boolean hasUmbrella = Integer.parseInt(lineElement[6]) == 1;
 
-                Passenger passenger = new Passenger(x, y, priority, travelEndX, travelEndY, GAME_PROPS);
+                Passenger passenger = new Passenger(x, y, priority, travelEndX, travelEndY, hasUmbrella, GAME_PROPS);
                 passengers[passenger_idx] = passenger;
                 passenger_idx++;
 
@@ -159,6 +169,10 @@ public class GamePlayScreen extends Screen{
                 Coin coinPower = new Coin(x, y, this.GAME_PROPS);
                 coins[coin_idx] = coinPower;
                 coin_idx++;
+            } else if(lineElement[0].equals(GameObjectType.INVINCIBLE_POWER.name())) {
+                InvinciblePower invinciblePower = new InvinciblePower(x, y, this.GAME_PROPS);
+                invinciblePowers[invinciblePower_idx] = invinciblePower;
+                invinciblePower_idx++;
             }
         }
     }
@@ -191,6 +205,7 @@ public class GamePlayScreen extends Screen{
         }
 
         taxi.update(input);
+        driver.update(input);
         totalEarnings = taxi.calculateTotalEarnings();
 
         if(coins.length > 0) {
@@ -206,6 +221,20 @@ public class GamePlayScreen extends Screen{
                 }
             }
             coinFramesActive = minFramesActive;
+        }
+
+        if(invinciblePowers.length > 0) {
+            for(InvinciblePower invinciblePower: invinciblePowers) {
+                invinciblePower.update(input);
+                invinciblePower.collide(taxi);
+
+//                // check if there's active coin and finding the coin with maximum ttl
+//                int framesActive = invinciblePower.getFramesActive();
+//                if(coinPower.getIsActive() && minFramesActive > framesActive) {
+//                    minFramesActive = framesActive;
+//                }
+            }
+//            coinFramesActive = minFramesActive;
         }
 
         displayInfo();
