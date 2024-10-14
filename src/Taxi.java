@@ -22,6 +22,11 @@ public class Taxi extends GameObject{
     private Smoke smoke;
     private final Properties GAME_PROPS;
 
+    private int timeoutTimer;
+    private final int TIMEOUT_FRAME = 200;
+    private final int TIMEOUT_ANIMATION_FRAME = 10;
+    private boolean timeoutPositionOnTop;
+
     public Taxi(int x, int y, int maxTripCount, Properties props) {
         this.x = x;
         this.y = y;
@@ -32,6 +37,7 @@ public class Taxi extends GameObject{
         this.radius = Float.parseFloat(props.getProperty("gameObjects.taxi.radius"));
         GAME_PROPS = props;
         smoke = null;
+        timeoutTimer = 0;
     }
 
     public boolean isMovingY() {
@@ -75,6 +81,19 @@ public class Taxi extends GameObject{
      * @param input The current mouse/keyboard input.
      */
     public void update(Input input) {
+        if (timeoutTimer >= TIMEOUT_FRAME - TIMEOUT_ANIMATION_FRAME) {
+            // timeout animation
+            if (timeoutPositionOnTop) {
+                y--;
+            } else {
+                y++;
+            }
+        } else {
+            // general movement
+            if(input != null) {
+                adjustToInputMovement(input);
+            }
+        }
         // if the taxi has coin power, apply the effect of the coin on the priority of the passenger
         // (See the logic in TravelPlan class)
         if (trip != null && coinPower != null) {
@@ -87,10 +106,6 @@ public class Taxi extends GameObject{
                 tp.setCoinPowerApplied();
             }
             tp.setPriority(newPriority);
-        }
-
-        if(input != null) {
-            adjustToInputMovement(input);
         }
 
         if(trip != null && trip.hasReachedEnd()) {
@@ -114,6 +129,7 @@ public class Taxi extends GameObject{
             }
         }
 
+        timeoutTimer--;
     }
 
     /**
@@ -167,5 +183,14 @@ public class Taxi extends GameObject{
     public void hit(float damage) {
         super.hit(damage);
         smoke = new Smoke(this.x, this.y, GAME_PROPS);
+    }
+
+    @Override
+    public void collide(GameObject object) {
+        if (isAlive && this.hasCollidedWith(object) && timeoutTimer <= 0) {
+            object.hit(damage);
+            timeoutTimer = TIMEOUT_FRAME;
+            timeoutPositionOnTop = (this.y < object.y);
+        }
     }
 }
