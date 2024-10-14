@@ -7,13 +7,14 @@ import java.util.Properties;
 
 public class Fireball extends GameObject{
     private int taxiSpeed;
-    private float damage;
     private int speedY;
-    private boolean hasCollided;
+    private EnemyCar origin;
 
-    public Fireball(int x, int y, Properties props) {
+    public Fireball(int x, int y, EnemyCar origin, Properties props) {
         this.x = x;
         this.y = y;
+        this.origin = origin;
+        isAlive = true;
         image = new Image(props.getProperty("gameObjects.fireball.image"));
         radius = Float.parseFloat(props.getProperty("gameObjects.fireball.radius"));
         damage = Float.parseFloat(props.getProperty("gameObjects.fireball.damage"));
@@ -53,50 +54,29 @@ public class Fireball extends GameObject{
      * @param input The current mouse/keyboard input.
      */
     public void update(Input input) {
-        // check if out of bounds
-        if (x < 0) {
-            hasCollided = true;
-        }
         adjustToInputMovement(input);
-        move();
 
-        if (!hasCollided) {
+        checkLife();
+        if (isAlive) {
+            move();
             draw();
         }
     }
 
-    /*
-     * check for collision with taxi
-     */
-    public void collide(Taxi taxi) {
-        taxi.hit(damage);
+    @Override
+    public void collide(GameObject object) {
+        if (isAlive && origin != object && this.hasCollidedWith(object)) {
+            object.hit(damage);
+            this.hasCollided = true;
+        }
     }
 
-    /*
-     * check for collision with driver
-     */
-    public void collide(Driver driver) {
-        driver.hit(damage);
-    }
-
-    /*
-     * check for collision with enemyCar
-     */
-    public void collide(EnemyCar enemyCar) {
-        enemyCar.hit(damage);
-    }
-
-    /*
-     * check for collision with car
-     */
-    public void collide(Car car) {
-
-    }
-
-    /*
-     * check for collision with passenger
-     */
-    public void collide(Passenger passenger) {
-
+    @Override
+    public void checkLife() {
+        // check for out of bounds
+        if (y < 0) {
+            hasCollided = true;
+        }
+        isAlive = !hasCollided;
     }
 }

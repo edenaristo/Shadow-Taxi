@@ -266,15 +266,16 @@ public class GamePlayScreen extends Screen{
 
         // update invincibility
         if(invinciblePowers.length > 0) {
-            for(InvinciblePower invinciblePower: invinciblePowers) {
+            for (InvinciblePower invinciblePower : invinciblePowers) {
                 invinciblePower.update(input);
                 invinciblePower.collide(taxi);
                 /// invinciblePower.collide(driver);
+            }
         }
 
-//        // COLLISION LOGIC: make a double loop for each of the gameobjects
-//
-//        // Driver
+        // COLLISION LOGIC: make a double loop for each of the gameobjects
+
+        // Driver
 //        driver.collide(taxi);
 //
 //        // Taxi
@@ -284,31 +285,33 @@ public class GamePlayScreen extends Screen{
 //        for (Car car : cars) {
 //            taxi.collide(car);
 //        }
-//
+
         // Fireball
         for (Fireball fireball : fireballs) {
-            fireball.collide(taxi);
-            fireball.collide(driver);
-            for (EnemyCar enemyCar : enemyCars) {
-                fireball.collide(enemyCar);
-            }
-            for (Car car : cars) {
-                fireball.collide(car);
-            }
-            for (Passenger passenger : passengers) {
-                fireball.collide(passenger);
+            if (!fireball.hasCollided()) {
+                fireball.collide(taxi);
+                fireball.collide(driver);
+                for (EnemyCar enemyCar : enemyCars) {
+                    fireball.collide(enemyCar);
+                }
+                for (Car car : cars) {
+                    fireball.collide(car);
+                }
+                for (Passenger passenger : passengers) {
+                    fireball.collide(passenger);
+                }
             }
         }
-//
-//        // Car
+
+        // Car
 //        for (Car car : cars) {
 //            car.collide(taxi);
 //            car.collide(driver);
 //            for (EnemyCar enemyCar : enemyCars) {
 //                car.collide(enemyCar);
 //            }
-//            for (Car car : cars) {
-//                car.collide(car);
+//            for (Car car2 : cars) {
+//                car.collide(car2);
 //            }
 //            for (Passenger passenger : passengers) {
 //                car.collide(passenger);
@@ -319,8 +322,8 @@ public class GamePlayScreen extends Screen{
 //        for (EnemyCar enemyCar : enemyCars) {
 //            enemyCar.collide(taxi);
 //            enemyCar.collide(driver);
-//            for (EnemyCar enemyCar : enemyCars) {
-//                enemyCar.collide(enemyCar);
+//            for (EnemyCar enemyCar2 : enemyCars) {
+//                enemyCar.collide(enemyCar2);
 //            }
 //            for (Car car : cars) {
 //                enemyCar.collide(car);

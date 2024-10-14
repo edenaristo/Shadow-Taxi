@@ -48,6 +48,6 @@ public class EnemyCar extends Car {
      * Shoot fireball by spawning one
      */
     public Fireball shootFireball(Properties props) {
-        return new Fireball(x, y, props);
+        return new Fireball(x, y, this, props);
     }
 }
