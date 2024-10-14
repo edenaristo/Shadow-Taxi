@@ -11,6 +11,9 @@ public class  Car extends GameObject{
     protected float damage;
     protected int speedY;
 
+    private Smoke smoke;
+    private final Properties GAME_PROPS;
+
     public Car(Properties props) {
 
         // randomly assign road lane
@@ -40,6 +43,8 @@ public class  Car extends GameObject{
         // randomly assign the speed of the car
         speedY = MiscUtils.getRandomInt(Integer.parseInt(props.getProperty("gameObjects.otherCar.minSpeedY")), Integer.parseInt(props.getProperty("gameObjects.otherCar.maxSpeedY")));
 
+        GAME_PROPS = props;
+        smoke = null;
     }
 
     /**
@@ -77,6 +82,13 @@ public class  Car extends GameObject{
         adjustToInputMovement(input);
         move();
         draw();
+
+        if (smoke != null) {
+            smoke.update(input);
+            if (!smoke.isAlive()) {
+                smoke = null;
+            }
+        }
     }
 
     /**
@@ -86,5 +98,9 @@ public class  Car extends GameObject{
         return MiscUtils.canSpawn(200);
     }
 
-
+    @Override
+    public void hit(float damage) {
+        super.hit(damage);
+        smoke = new Smoke(this.x, this.y, GAME_PROPS);
+    }
 }

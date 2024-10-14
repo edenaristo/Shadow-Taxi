@@ -11,6 +11,5 @@ public class Smoke extends Particle{
         super(x, y, props);
         image = new Image(props.getProperty("gameObjects.smoke.image"));
         duration = Integer.parseInt(props.getProperty("gameObjects.smoke.ttl"));
-        System.out.printf("smoke  before draw %d, %d\n", x, y);
     }
 }

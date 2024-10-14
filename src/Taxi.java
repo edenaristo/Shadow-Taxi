@@ -20,7 +20,7 @@ public class Taxi extends GameObject{
     private Trip trip;
 
     private Smoke smoke;
-    private Properties GAME_PROPS;
+    private final Properties GAME_PROPS;
 
     public Taxi(int x, int y, int maxTripCount, Properties props) {
         this.x = x;
@@ -167,6 +167,5 @@ public class Taxi extends GameObject{
     public void hit(float damage) {
         super.hit(damage);
         smoke = new Smoke(this.x, this.y, GAME_PROPS);
-        System.out.printf("smoke is %d, %d\n", smoke.getX(), smoke.getY());
     }
 }
