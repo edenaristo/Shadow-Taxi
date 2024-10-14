@@ -27,6 +27,7 @@ public class GamePlayScreen extends Screen{
     private ArrayList<Car> cars;
     private ArrayList<EnemyCar> enemyCars;
     private ArrayList<Fireball> fireballs;
+    private ArrayList<Particle> particles;
     private Background background1;
     private Background background2;
 
@@ -66,6 +67,7 @@ public class GamePlayScreen extends Screen{
         cars = new ArrayList<>();
         enemyCars = new ArrayList<>();
         fireballs = new ArrayList<>();
+        particles = new ArrayList<>();
 
         this.TARGET = Float.parseFloat(gameProps.getProperty("gamePlay.target"));
         this.MAX_FRAMES = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
@@ -271,6 +273,11 @@ public class GamePlayScreen extends Screen{
                 invinciblePower.collide(taxi);
                 /// invinciblePower.collide(driver);
             }
+        }
+
+        // update effects
+        for (Particle particle : particles) {
+            particle.update(input);
         }
 
         // COLLISION LOGIC: make a double loop for each of the gameobjects

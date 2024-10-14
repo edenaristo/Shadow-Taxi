@@ -19,6 +19,9 @@ public class Taxi extends GameObject{
     private Coin coinPower;
     private Trip trip;
 
+    private Smoke smoke;
+    private Properties GAME_PROPS;
+
     public Taxi(int x, int y, int maxTripCount, Properties props) {
         this.x = x;
         this.y = y;
@@ -27,6 +30,8 @@ public class Taxi extends GameObject{
         this.SPEED_X = Integer.parseInt(props.getProperty("gameObjects.taxi.speedX"));
         this.image = new Image(props.getProperty("gameObjects.taxi.image"));
         this.radius = Float.parseFloat(props.getProperty("gameObjects.taxi.radius"));
+        GAME_PROPS = props;
+        smoke = null;
     }
 
     public boolean isMovingY() {
@@ -102,6 +107,13 @@ public class Taxi extends GameObject{
             }
         }
 
+        if (smoke != null) {
+            smoke.update(input);
+            if (!smoke.isAlive()) {
+                smoke = null;
+            }
+        }
+
     }
 
     /**
@@ -149,5 +161,12 @@ public class Taxi extends GameObject{
             }
         }
         return totalEarnings;
+    }
+
+    @Override
+    public void hit(float damage) {
+        super.hit(damage);
+        smoke = new Smoke(this.x, this.y, GAME_PROPS);
+        System.out.printf("smoke is %d, %d\n", smoke.getX(), smoke.getY());
     }
 }

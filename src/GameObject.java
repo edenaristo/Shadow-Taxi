@@ -58,4 +58,8 @@ public abstract class GameObject {
             isAlive = false;
         }
     }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
 }
