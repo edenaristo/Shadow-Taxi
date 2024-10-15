@@ -54,6 +54,7 @@ public class Driver extends GameObject{
 
         if (isOutside) {
             draw();
+            adjustToInputMovementOutside(input);
         }
 
         if (isAlive) {
@@ -95,6 +96,14 @@ public class Driver extends GameObject{
             isMovingX =  true;
         } else if(input.wasReleased(Keys.LEFT) || input.wasReleased(Keys.RIGHT)) {
             isMovingX = false;
+        }
+    }
+
+    public void adjustToInputMovementOutside(Input input) {
+        if (input.isDown(Keys.UP)) {
+            y -= speedY;
+        } else if(input.isDown(Keys.DOWN)) {
+            y += speedY;
         }
     }
 

@@ -57,6 +57,8 @@ public class GamePlayScreen extends Screen{
     private final int TRIP_INFO_OFFSET_2;
     private final int TRIP_INFO_OFFSET_3;
 
+    private final int WINDOW_HEIGHT;
+
     public GamePlayScreen(Properties gameProps, Properties msgProps, String playerName) {
         this.GAME_PROPS = gameProps;
         this.MSG_PROPS = msgProps;
@@ -92,6 +94,8 @@ public class GamePlayScreen extends Screen{
         TRIP_INFO_OFFSET_1 = 30;
         TRIP_INFO_OFFSET_2 = 60;
         TRIP_INFO_OFFSET_3 = 90;
+
+        WINDOW_HEIGHT = Integer.parseInt(gameProps.getProperty("window.height"));
 
         this.PLAYER_NAME = playerName;
     }
@@ -411,6 +415,11 @@ public class GamePlayScreen extends Screen{
         // game is over if the driver is dead
         if (!isGameOver) {
             isGameOver = driver.finishedDeath();
+        }
+
+        // game is over if taxi goes out of bounds
+        if (!isGameOver) {
+            isGameOver = taxi.getY() > WINDOW_HEIGHT;
         }
         return isGameOver;
     }
