@@ -62,4 +62,8 @@ public abstract class GameObject {
     public boolean isAlive() {
         return isAlive;
     }
+
+    public float getHealth() {
+        return health;
+    }
 }

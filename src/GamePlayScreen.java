@@ -18,6 +18,8 @@ public class GamePlayScreen extends Screen{
     private int currFrame = 0;
     private int[] rainIntervals;
 
+    private int maxPassengerCount;
+
     // game objects
     private Taxi taxi;
     private Driver driver;
@@ -27,6 +29,7 @@ public class GamePlayScreen extends Screen{
     private ArrayList<Car> cars;
     private ArrayList<EnemyCar> enemyCars;
     private ArrayList<Fireball> fireballs;
+    private ArrayList<Taxi> deadTaxis;
     private Background background1;
     private Background background2;
 
@@ -66,6 +69,7 @@ public class GamePlayScreen extends Screen{
         cars = new ArrayList<>();
         enemyCars = new ArrayList<>();
         fireballs = new ArrayList<>();
+        deadTaxis = new ArrayList<>();
 
         this.TARGET = Float.parseFloat(gameProps.getProperty("gamePlay.target"));
         this.MAX_FRAMES = Integer.parseInt(gameProps.getProperty("gamePlay.maxFrames"));
@@ -136,19 +140,19 @@ public class GamePlayScreen extends Screen{
     private void populateGameObjects(ArrayList<String[]> lines) {
 
         // Since you haven't learned Lists in Java, we have to use two for loops to iterate over the lines.
-        int passengerCount = 0;
+        maxPassengerCount = 0;
         int coinCount = 0;
         int invinciblePowerCount = 0;
         for(String[] lineElement: lines) {
             if(lineElement[0].equals(GameObjectType.PASSENGER.name())) {
-                passengerCount++;
+                maxPassengerCount++;
             } else if(lineElement[0].equals(GameObjectType.COIN.name())) {
                 coinCount++;
             } else if(lineElement[0].equals(GameObjectType.INVINCIBLE_POWER.name())) {
                 invinciblePowerCount++;
             }
         }
-        passengers = new Passenger[passengerCount];
+        passengers = new Passenger[maxPassengerCount];
         coins = new Coin[coinCount];
         invinciblePowers = new InvinciblePower[invinciblePowerCount];
 
@@ -161,7 +165,7 @@ public class GamePlayScreen extends Screen{
             int y = Integer.parseInt(lineElement[2]);
 
             if(lineElement[0].equals(GameObjectType.TAXI.name())) {
-                taxi = new Taxi(x, y, passengerCount, this.GAME_PROPS);
+                taxi = new Taxi(x, y, maxPassengerCount, this.GAME_PROPS);
             } else if(lineElement[0].equals(GameObjectType.DRIVER.name())) {
                 driver = new Driver(x, y, this.GAME_PROPS);
             } else if(lineElement[0].equals(GameObjectType.PASSENGER.name())) {
@@ -225,7 +229,9 @@ public class GamePlayScreen extends Screen{
             passenger.updateWithTaxi(input, taxi);
         }
 
-        taxi.update(input);
+        if (taxi != null) {
+            taxi.update(input);
+        }
         driver.update(input);
         totalEarnings = taxi.calculateTotalEarnings();
 
@@ -273,6 +279,11 @@ public class GamePlayScreen extends Screen{
             }
         }
 
+        // DeadTaxi
+        for (Taxi taxi : deadTaxis) {
+            taxi.update(input);
+        }
+
         // COLLISION LOGIC: make a double loop for each of the gameobjects
 
         // Driver
@@ -306,7 +317,7 @@ public class GamePlayScreen extends Screen{
         // Car
         for (Car car : cars) {
             car.collide(taxi);
-           car.collide(driver);
+            car.collide(driver);
             for (EnemyCar enemyCar : enemyCars) {
                 car.collide(enemyCar);
             }
@@ -331,6 +342,13 @@ public class GamePlayScreen extends Screen{
 //            for (Passenger passenger : passengers) {
 //                enemyCar.collide(passenger);
 //            }
+        }
+
+        if (!taxi.isAlive) {
+            driver.setOutside();
+            //passenger.setOutside();
+            deadTaxis.add(taxi);
+            taxi = new Taxi(MiscUtils.selectAValue(Integer.parseInt(GAME_PROPS.getProperty("roadLaneCenter1")), Integer.parseInt(GAME_PROPS.getProperty("roadLaneCenter3"))), MiscUtils.getRandomInt(Integer.parseInt(GAME_PROPS.getProperty("gameObjects.taxi.nextSpawnMinY")), Integer.parseInt(GAME_PROPS.getProperty("gameObjects.taxi.nextSpawnMaxY"))), maxPassengerCount, GAME_PROPS);
         }
 
         displayInfo();

@@ -9,17 +9,18 @@ import java.util.Properties;
  */
 public class Taxi extends GameObject{
 
-    private final Trip[] TRIPS;
-    private int tripCount;
+    private static Trip[] TRIPS;
+    private static int tripCount;
 
     private final int SPEED_X;
     private boolean isMovingY;
     private boolean isMovingX;
 
     private Coin coinPower;
-    private Trip trip;
+    private static Trip trip;
 
     private Smoke smoke;
+    private Fire fire;
     private final Properties GAME_PROPS;
 
     private int timeoutTimer;
@@ -30,6 +31,7 @@ public class Taxi extends GameObject{
     private int driverSpeed;
 
     private Image damagedImage;
+    private boolean isDriverless;
 
     public Taxi(int x, int y, int maxTripCount, Properties props) {
         this.x = x;
@@ -40,13 +42,17 @@ public class Taxi extends GameObject{
         this.image = new Image(props.getProperty("gameObjects.taxi.image"));
         this.radius = Float.parseFloat(props.getProperty("gameObjects.taxi.radius"));
         this.health = Float.parseFloat(props.getProperty("gameObjects.taxi.health"));
+        this.damage = Float.parseFloat(props.getProperty("gameObjects.taxi.damage"));
 
         GAME_PROPS = props;
         smoke = null;
+        fire = null;
         timeoutTimer = 0;
 
         damagedImage = new Image(props.getProperty("gameObjects.taxi.damagedImage"));
         driverSpeed = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
+
+        isDriverless = true;
     }
 
     public boolean isMovingY() {
@@ -97,13 +103,12 @@ public class Taxi extends GameObject{
             } else {
                 y++;
             }
-        } else if (isAlive){
+        } else if (isAlive && !isDriverless){
             // general movement
             if(input != null) {
                 adjustToInputMovement(input);
             }
         } else {
-            deathAnimation();
             adjustToInputMovementDead(input);
         }
         // if the taxi has coin power, apply the effect of the coin on the priority of the passenger
@@ -125,7 +130,9 @@ public class Taxi extends GameObject{
         }
 
         draw();
-        checkLife();
+        if (isAlive) {
+            checkLife();
+        }
 
         // the flag of the current trip renders to the screen
         if(tripCount > 0) {
@@ -140,6 +147,13 @@ public class Taxi extends GameObject{
             if (!smoke.isAlive()) {
                 smoke = null;
             }
+        }
+
+        if (fire != null) {
+            fire.update(input);
+                if (!fire.isAlive()){
+                    fire = null;
+                }
         }
 
         timeoutTimer--;
@@ -215,5 +229,14 @@ public class Taxi extends GameObject{
 
     private void deathAnimation() {
         image = damagedImage;
+        fire = new Fire(this.x, this.y, GAME_PROPS);
+    }
+
+    @Override
+    public void checkLife() {
+        if (health <= 0) {
+            isAlive = false;
+            deathAnimation();
+        }
     }
 }

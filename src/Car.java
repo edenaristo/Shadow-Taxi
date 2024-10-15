@@ -12,6 +12,7 @@ public class  Car extends GameObject{
     protected int speedY;
 
     protected Smoke smoke;
+    private Fire fire;
     protected final Properties GAME_PROPS;
 
     protected int timeoutTimer;
@@ -100,12 +101,22 @@ public class  Car extends GameObject{
             }
         }
 
-        draw();
+        if (isAlive) {
+            draw();
+            checkLife();
+        }
 
         if (smoke != null) {
             smoke.update(input);
             if (!smoke.isAlive()) {
                 smoke = null;
+            }
+        }
+
+        if (fire != null) {
+            fire.update(input);
+            if (!fire.isAlive()){
+                fire = null;
             }
         }
 
@@ -121,7 +132,7 @@ public class  Car extends GameObject{
 
     @Override
     public void hit(float damage) {
-        super.hit(damage);
+        this.health -= damage;
         smoke = new Smoke(this.x, this.y, GAME_PROPS);
     }
 
@@ -132,5 +143,17 @@ public class  Car extends GameObject{
             timeoutTimer = TIMEOUT_FRAME;
             timeoutPositionOnTop = (this.y < object.y);
         }
+    }
+
+    @Override
+    public void checkLife() {
+        if (health <= 0) {
+            isAlive = false;
+            deathAnimation();
+        }
+    }
+
+    private void deathAnimation() {
+        fire = new Fire(this.x, this.y, GAME_PROPS);
     }
 }
