@@ -15,12 +15,15 @@ public class Driver extends GameObject{
 
     private Blood blood;
 
+    private boolean finishedDeath;
+
 
     public Driver(int x, int y, Properties props) {
         this.x = x;
         this.y = y;
         this.moveY = 0;
         isOutside = true;
+        finishedDeath = false;
 
         this.SPEED_X = Integer.parseInt(props.getProperty("gameObjects.driver.walkSpeedX"));
         this.speedY = Integer.parseInt(props.getProperty("gameObjects.driver.walkSpeedY"));
@@ -61,6 +64,7 @@ public class Driver extends GameObject{
             blood.update(input);
             if (!blood.isAlive()) {
                 blood = null;
+                finishedDeath = true;
             }
         }
     }
@@ -119,5 +123,9 @@ public class Driver extends GameObject{
             isAlive = false;
             deathAnimation();
         }
+    }
+
+    public boolean finishedDeath() {
+        return finishedDeath;
     }
 }

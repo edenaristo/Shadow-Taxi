@@ -410,7 +410,7 @@ public class GamePlayScreen extends Screen{
 
         // game is over if the driver is dead
         if (!isGameOver) {
-            isGameOver = !driver.isAlive;
+            isGameOver = driver.finishedDeath();
         }
         return isGameOver;
     }
