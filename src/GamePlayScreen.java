@@ -247,7 +247,7 @@ public class GamePlayScreen extends Screen{
         // update enemy cars
         for (EnemyCar enemyCar : enemyCars) {
             enemyCar.update(input);
-            if (enemyCar.canShootFireball()){
+            if (enemyCar.isAlive() && enemyCar.canShootFireball()){
                 Fireball fireball = enemyCar.shootFireball(GAME_PROPS);
                 fireballs.add(fireball);
             }
@@ -279,7 +279,7 @@ public class GamePlayScreen extends Screen{
             for (InvinciblePower invinciblePower : invinciblePowers) {
                 invinciblePower.update(input);
                 invinciblePower.collide(taxi);
-                /// invinciblePower.collide(driver);
+                invinciblePower.collide(driver);
             }
         }
 
@@ -328,11 +328,8 @@ public class GamePlayScreen extends Screen{
             for (Car car2 : cars) {
                 car.collide(car2);
             }
-//            for (Passenger passenger : passengers) {
-//                car.collide(passenger);
-//            }
         }
-//
+
         // EnemyCar
         for (EnemyCar enemyCar : enemyCars) {
             enemyCar.collide(taxi);
@@ -343,9 +340,6 @@ public class GamePlayScreen extends Screen{
             for (Car car : cars) {
                 enemyCar.collide(car);
             }
-//            for (Passenger passenger : passengers) {
-//                enemyCar.collide(passenger);
-//            }
         }
 
         if (!taxi.isAlive) {

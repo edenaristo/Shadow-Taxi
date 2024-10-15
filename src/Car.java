@@ -138,7 +138,7 @@ public class  Car extends GameObject{
 
     @Override
     public void collide(GameObject object) {
-        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && timeoutTimer <= 0 && object != this) {
+        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && timeoutTimer <= 0 && object != this && !object.isInvincible()) {
             object.hit(damage);
             timeoutTimer = TIMEOUT_FRAME;
             timeoutPositionOnTop = (this.y < object.y);

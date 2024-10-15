@@ -65,7 +65,7 @@ public class Fireball extends GameObject{
 
     @Override
     public void collide(GameObject object) {
-        if (isAlive && origin != object && this.hasCollidedWith(object)) {
+        if (isAlive && object.isAlive() && origin != object && this.hasCollidedWith(object) && !object.isInvincible()) {
             object.hit(damage);
             this.hasCollided = true;
         }

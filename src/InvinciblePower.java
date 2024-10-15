@@ -25,9 +25,7 @@ public class InvinciblePower extends GameObject{
      * @param input The current mouse/keyboard input.
      */
     public void update(Input input) {
-        if(isCollided) {
-            //framesActive++;
-        } else {
+        if(!isCollided) {
             if(input != null) {
                 adjustToInputMovement(input);
             }
@@ -69,10 +67,23 @@ public class InvinciblePower extends GameObject{
      */
     public void collide(Taxi taxi) {
         if(hasCollidedWith(taxi)) {
-            //taxi.collectPower(this);
+            taxi.collectInvincible(this);
             setIsCollided();
         }
     }
+
+    /**
+     * Check if the coin has collided with any PowerCollectable objects, and power will be collected by PowerCollectable
+     * object that is collided with.
+     */
+    public void collide(Driver driver) {
+        if(hasCollidedWith(driver)) {
+            driver.collectInvincible(this);
+            setIsCollided();
+        }
+    }
+
+
     /**
      * Check if the object is collided with another object based on the radius of the two objects.
      * @param taxi The taxi object to be checked.
@@ -91,5 +102,9 @@ public class InvinciblePower extends GameObject{
      */
     public void setIsCollided() {
         this.isCollided = true;
+    }
+
+    public int getMAX_FRAMES() {
+        return MAX_FRAMES;
     }
 }

@@ -24,6 +24,7 @@ public class Driver extends GameObject{
         this.moveY = 0;
         isOutside = true;
         finishedDeath = false;
+        invincibilityFrames = 0;
 
         this.SPEED_X = Integer.parseInt(props.getProperty("gameObjects.driver.walkSpeedX"));
         this.speedY = Integer.parseInt(props.getProperty("gameObjects.driver.walkSpeedY"));
@@ -68,6 +69,8 @@ public class Driver extends GameObject{
                 finishedDeath = true;
             }
         }
+
+        invincibilityFrames--;
     }
 
     /**
@@ -136,5 +139,16 @@ public class Driver extends GameObject{
 
     public boolean finishedDeath() {
         return finishedDeath;
+    }
+
+    public void collectInvincible(InvinciblePower star) {
+        invincibilityFrames = star.getMAX_FRAMES();
+    }
+
+    @Override
+    public void hit(float damage) {
+        if (isOutside) {
+            this.health -= damage;
+        }
     }
 }

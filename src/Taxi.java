@@ -36,6 +36,7 @@ public class Taxi extends GameObject{
     public Taxi(int x, int y, int maxTripCount, Properties props) {
         this.x = x;
         this.y = y;
+        invincibilityFrames = 0;
         if (TRIPS == null) {
             TRIPS = new Trip[maxTripCount];
         }
@@ -160,6 +161,7 @@ public class Taxi extends GameObject{
         }
 
         timeoutTimer--;
+        invincibilityFrames--;
     }
 
     /**
@@ -217,7 +219,7 @@ public class Taxi extends GameObject{
 
     @Override
     public void hit(float damage) {
-        super.hit(damage);
+        this.health -= damage;
         smoke = new Smoke(this.x, this.y, GAME_PROPS);
     }
 
@@ -245,5 +247,9 @@ public class Taxi extends GameObject{
 
     public void driverGoesIn() {
         isDriverless = false;
+    }
+
+    public void collectInvincible(InvinciblePower star) {
+        invincibilityFrames = star.getMAX_FRAMES();
     }
 }

@@ -16,6 +16,8 @@ public abstract class GameObject {
     protected boolean isAlive = true;
     protected boolean hasCollided = false;
 
+    protected int invincibilityFrames = 0;
+
     public int getX() {
         return x;
     }
@@ -33,7 +35,7 @@ public abstract class GameObject {
     }
 
     public void collide(GameObject object) {
-        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && object != this){
+        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && object != this && !object.isInvincible()){
             object.hit(damage);
             this.hasCollided = true;
         }
@@ -65,5 +67,9 @@ public abstract class GameObject {
 
     public float getHealth() {
         return health;
+    }
+
+    public boolean isInvincible() {
+        return invincibilityFrames > 0;
     }
 }
