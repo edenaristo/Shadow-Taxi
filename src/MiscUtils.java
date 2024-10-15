@@ -5,6 +5,7 @@ import java.util.Random;
 
 /**
  * This class contains miscellaneous utility methods.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class MiscUtils {
 

@@ -5,7 +5,8 @@ import bagel.Keys;
 import java.util.Properties;
 
 /**
- * A class representing the background of the game play.
+ * A class representing the background of the game play. Adapted from SWEN20003 project 1 solution
+ * Adapted from SWEN20003 project 1 solution
  */
 public class Background extends GameObject{
 

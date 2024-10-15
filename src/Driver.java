@@ -4,6 +4,10 @@ import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The Driver class represents a character in the game who can move both inside and outside the taxi.
+ * It handles movement, collision detection, and the life cycle of the driver, including death animations and invincibility.
+ */
 public class Driver extends GameObject{
 
     private final int SPEED_X;
@@ -102,6 +106,9 @@ public class Driver extends GameObject{
         }
     }
 
+    /**
+     * Adjust the position based on the input movement when the driver is outside the vehicle.
+     */
     public void adjustToInputMovementOutside(Input input) {
         if (input.isDown(Keys.UP)) {
             y -= speedY;
@@ -110,10 +117,17 @@ public class Driver extends GameObject{
         }
     }
 
+    /**
+     * Set the driver as outside the taxi
+     */
     public void setOutside() {
         isOutside = true;
     }
 
+
+    /**
+     * Check for collision and do the logic for collision
+     */
     @Override
     public void collide(GameObject object) {
         if (isAlive && object.isAlive() && this.hasCollidedWith(object) && object instanceof Taxi && isOutside){
@@ -124,11 +138,16 @@ public class Driver extends GameObject{
         }
     }
 
-
+    /**
+     * Do the death animation which is spilling blood
+     */
     public void deathAnimation() {
         blood = new Blood(this.x, this.y, GAME_PROPS);
     }
 
+    /**
+     * check whether the driver is still alive and update isalive
+     */
     @Override
     public void checkLife() {
         if (health <= 0) {
@@ -137,14 +156,23 @@ public class Driver extends GameObject{
         }
     }
 
+    /**
+     * check whether the death animation is finished
+     */
     public boolean finishedDeath() {
         return finishedDeath;
     }
 
+    /**
+     * collect invincibility power and use it
+     */
     public void collectInvincible(InvinciblePower star) {
         invincibilityFrames = star.getMAX_FRAMES();
     }
 
+    /**
+     * damage the driver when get hit
+     */
     @Override
     public void hit(float damage) {
         if (isOutside) {

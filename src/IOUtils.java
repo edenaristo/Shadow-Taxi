@@ -4,6 +4,7 @@ import java.util.Properties;
 
 /**
  * A utility class that provides methods to read and write files.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class IOUtils {
 

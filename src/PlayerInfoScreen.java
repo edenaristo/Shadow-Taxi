@@ -4,6 +4,7 @@ import java.util.Properties;
 
 /**
  * The screen class which allows the player to enter their name.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class PlayerInfoScreen extends Screen{
 
@@ -66,6 +67,9 @@ public class PlayerInfoScreen extends Screen{
         return input.wasPressed(Keys.ENTER);
     }
 
+    /**
+     * Getter for player name
+     */
     public String getPlayerName() {
         return playerName;
     }

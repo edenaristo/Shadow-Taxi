@@ -5,6 +5,11 @@ import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The Passenger class represents a passenger in the game that interacts with a taxi and travels based on a travel plan.
+ * It handles movement, detecting taxis, initiating trips, and determining when the passenger reaches their destination.
+ * Adapted from SWEN20003 project 1 solution
+ */
 public class Passenger extends GameObject{
 
     private final int TAXI_DETECT_radius;
@@ -43,10 +48,16 @@ public class Passenger extends GameObject{
         this.image = new Image(props.getProperty("gameObjects.passenger.image"));
     }
 
+    /**
+     * Setter for Y position
+     */
     public void setY(int y) {
         this.y = y;
     }
 
+    /**
+     * Getter for travel plan
+     */
     public TravelPlan getTravelPlan() {
         return TRAVEL_PLAN;
     }

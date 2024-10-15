@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * A class that represents the game end screen for a win/loss.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class GameEndScreen extends Screen {
 

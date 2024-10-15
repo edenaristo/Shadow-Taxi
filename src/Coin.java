@@ -7,6 +7,7 @@ import java.util.Properties;
 /**
  * Class representing coins in the game. Coins can be collected by either the player or the taxi.
  * It will set one level higher priority for the passengers that are waiting to get-in or already in the taxi.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class Coin extends GameObject{
     private final int MAX_FRAMES;

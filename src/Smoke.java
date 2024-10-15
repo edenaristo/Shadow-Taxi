@@ -1,10 +1,11 @@
-import bagel.Font;
 import bagel.Image;
-import bagel.Input;
-import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The Smoke class represents a smoke particle effect in the game.
+ * It extends the Particle class and uses properties to define its image and duration.
+ */
 public class Smoke extends Particle{
 
     public Smoke(int x, int y, Properties props) {

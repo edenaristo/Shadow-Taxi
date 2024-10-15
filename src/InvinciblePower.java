@@ -4,6 +4,10 @@ import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The InvinciblePower class represents a power-up object in the game that grants invincibility when collected.
+ * It handles movement, collision detection with Taxi or Driver, and provides the maximum duration of invincibility.
+ */
 public class InvinciblePower extends GameObject{
     private final int MAX_FRAMES;
     private boolean isCollided;
@@ -20,9 +24,7 @@ public class InvinciblePower extends GameObject{
     }
 
     /**
-     * Move the object in y direction according to the keyboard input, and render the coin image, before collision
-     * happens with PowerCollectable objects. Once the collision happens, the coin active time will be increased.
-     * @param input The current mouse/keyboard input.
+     * updates the behaviour of the invincibility power in the game
      */
     public void update(Input input) {
         if(!isCollided) {
@@ -62,8 +64,7 @@ public class InvinciblePower extends GameObject{
     }
 
     /**
-     * Check if the coin has collided with any PowerCollectable objects, and power will be collected by PowerCollectable
-     * object that is collided with.
+     * Check if the invincibility has collided with taxi and collects them
      */
     public void collide(Taxi taxi) {
         if(hasCollidedWith(taxi)) {
@@ -73,8 +74,7 @@ public class InvinciblePower extends GameObject{
     }
 
     /**
-     * Check if the coin has collided with any PowerCollectable objects, and power will be collected by PowerCollectable
-     * object that is collided with.
+     * Check if the invincibility has collided with driver and collects them
      */
     public void collide(Driver driver) {
         if(hasCollidedWith(driver)) {
@@ -104,6 +104,9 @@ public class InvinciblePower extends GameObject{
         this.isCollided = true;
     }
 
+    /**
+     * getter for MAX_FRAMES
+     */
     public int getMAX_FRAMES() {
         return MAX_FRAMES;
     }

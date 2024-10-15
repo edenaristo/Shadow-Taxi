@@ -1,10 +1,12 @@
-import bagel.Font;
-import bagel.Image;
 import bagel.Input;
 import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The Particle class represents temporary objects in the game, such as visual effects or animations.
+ * It handles movement, input adjustments, and life duration, with the particle disappearing when its duration ends.
+ */
 public class Particle extends GameObject {
 
     protected int duration;
@@ -57,6 +59,9 @@ public class Particle extends GameObject {
         }
     }
 
+    /**
+     * Checks for life and updates the life
+     */
     @Override
     public void checkLife() {
         // check for out of bounds

@@ -3,6 +3,7 @@ import java.util.Properties;
 /**
  * A class representing a travel plan, which has all the details of priority, coin power,
  * end location and expected fee calculation.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class TravelPlan {
 

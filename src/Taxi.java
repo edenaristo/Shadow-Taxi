@@ -6,6 +6,7 @@ import java.util.Properties;
 
 /**
  * The class representing the taxis in the game play
+ * Adapted from SWEN20003 project 1 solution
  */
 public class Taxi extends GameObject{
 
@@ -58,10 +59,16 @@ public class Taxi extends GameObject{
         isDriverless = true;
     }
 
+    /**
+     * getter for isMovingY
+     */
     public boolean isMovingY() {
         return isMovingY;
     }
 
+    /**
+     * getter for isMovingX
+     */
     public boolean isMovingX() {
         return isMovingX;
     }
@@ -78,6 +85,9 @@ public class Taxi extends GameObject{
         }
     }
 
+    /**
+     * getter for trip
+     */
     public Trip getTrip() {
         return this.trip;
     }
@@ -193,12 +203,18 @@ public class Taxi extends GameObject{
         }
     }
 
+    /**
+     * Adjust the input movement of the taxi based on the driver's movement when the taxi is dead
+     */
     public void adjustToInputMovementDead(Input input) {
         if (input.isDown(Keys.UP)) {
             y += driverSpeed;
         }
     }
 
+    /**
+     * collect the coin
+     */
     public void collectPower(Coin coin) {
         coinPower = coin;
     }
@@ -217,12 +233,18 @@ public class Taxi extends GameObject{
         return totalEarnings;
     }
 
+    /**
+     * taxi is hit, damage taken
+     */
     @Override
     public void hit(float damage) {
         this.health -= damage;
         smoke = new Smoke(this.x, this.y, GAME_PROPS);
     }
 
+    /**
+     * check for collision with another game object and do the logic for collision
+     */
     @Override
     public void collide(GameObject object) {
         if (isAlive && object.isAlive() && this.hasCollidedWith(object) && timeoutTimer <= 0) {
@@ -232,11 +254,17 @@ public class Taxi extends GameObject{
         }
     }
 
+    /**
+     * play the death animation of the taxi
+     */
     private void deathAnimation() {
         image = damagedImage;
         fire = new Fire(this.x, this.y, GAME_PROPS);
     }
 
+    /**
+     * check the life and updates its value
+     */
     @Override
     public void checkLife() {
         if (health <= 0) {
@@ -245,10 +273,16 @@ public class Taxi extends GameObject{
         }
     }
 
+    /**
+     * updates the status of the taxi when driver goes in the taxi
+     */
     public void driverGoesIn() {
         isDriverless = false;
     }
 
+    /**
+     * collect invincibility effect
+     */
     public void collectInvincible(InvinciblePower star) {
         invincibilityFrames = star.getMAX_FRAMES();
     }

@@ -1,5 +1,6 @@
 /**
  * Score class that stores the player's name and score.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class Score {
     private final String PLAYER_NAME;

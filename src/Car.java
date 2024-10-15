@@ -1,10 +1,13 @@
-import bagel.Font;
 import bagel.Image;
 import bagel.Input;
 import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The Car class represents a game object that simulates a moving car in the game.
+ * It handles movement, collision detection, and the life cycle of the car, including health, damage, and effects such as smoke and fire.
+ */
 public class  Car extends GameObject{
     protected int taxiSpeed;
     protected float health;
@@ -20,6 +23,11 @@ public class  Car extends GameObject{
     protected final int TIMEOUT_ANIMATION_FRAME = 10;
     protected boolean timeoutPositionOnTop;
 
+
+    /**
+     * Constructor for the Car class.
+     * Initializes the car's position, health, damage, speed, and image based on the provided properties.
+     */
     public Car(Properties props) {
 
         // randomly assign road lane
@@ -130,12 +138,18 @@ public class  Car extends GameObject{
         return MiscUtils.canSpawn(200);
     }
 
+    /**
+     * hit and damage the car.
+     */
     @Override
     public void hit(float damage) {
         this.health -= damage;
         smoke = new Smoke(this.x, this.y, GAME_PROPS);
     }
 
+    /**
+     * check for collision and do the logic if collision happened.
+     */
     @Override
     public void collide(GameObject object) {
         if (isAlive && object.isAlive() && this.hasCollidedWith(object) && timeoutTimer <= 0 && object != this && !object.isInvincible()) {
@@ -145,6 +159,9 @@ public class  Car extends GameObject{
         }
     }
 
+    /**
+     * Checks and updates whether the car is still alive.
+     */
     @Override
     public void checkLife() {
         if (health <= 0) {
@@ -153,6 +170,9 @@ public class  Car extends GameObject{
         }
     }
 
+    /**
+     * Triggers the death animation by spawning fire at the car's position.
+     */
     private void deathAnimation() {
         fire = new Fire(this.x, this.y, GAME_PROPS);
     }

@@ -7,6 +7,7 @@ import java.util.Properties;
 /**
  * A class representing the trip end flag in the game play.
  * Objects of this class will only move up and down based on the keyboard input. No other functionalities needed.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class TripEndFlag extends GameObject {
 

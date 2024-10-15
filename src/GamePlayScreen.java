@@ -6,6 +6,7 @@ import java.util.*;
 
 /**
  * Represents the gameplay screen in the game.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class GamePlayScreen extends Screen{
     private final Properties GAME_PROPS;

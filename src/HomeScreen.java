@@ -4,6 +4,7 @@ import java.util.Properties;
 
 /**
  * A class representing the home screen of the game.
+ * Adapted from SWEN20003 project 1 solution
  * */
 public class HomeScreen extends Screen{
 

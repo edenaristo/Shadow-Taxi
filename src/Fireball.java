@@ -1,10 +1,13 @@
-import bagel.Font;
 import bagel.Image;
 import bagel.Input;
 import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The Fireball class represents a projectile in the game, fired by an EnemyCar.
+ * It moves in the y-direction and can collide with other game objects, dealing damage upon impact.
+ */
 public class Fireball extends GameObject{
     private int taxiSpeed;
     private int speedY;
@@ -63,6 +66,10 @@ public class Fireball extends GameObject{
         }
     }
 
+    /**
+     * check for collision between the two objects and do collision logics
+     * @param object
+     */
     @Override
     public void collide(GameObject object) {
         if (isAlive && object.isAlive() && origin != object && this.hasCollidedWith(object) && !object.isInvincible()) {
@@ -71,6 +78,9 @@ public class Fireball extends GameObject{
         }
     }
 
+    /**
+     * check for life and updates it
+     */
     @Override
     public void checkLife() {
         // check for out of bounds

@@ -1,10 +1,11 @@
-import bagel.Font;
 import bagel.Image;
-import bagel.Input;
-import bagel.Keys;
 
 import java.util.Properties;
 
+/**
+ * The EnemyCar class represents a hostile car in the game that can shoot fireballs and has unique health, damage, and behavior properties.
+ * It extends the Car class and provides additional functionalities such as fireball attacks.
+ */
 public class EnemyCar extends Car {
 
     public EnemyCar(Properties props) {

@@ -6,6 +6,7 @@ import java.util.Properties;
  * A class representing the trip in the game play.
  * It contains the passenger, driver, taxi, trip end flag and other relevant details.
  * It will calculate the fee of the trip and update the status of the trip.
+ * Adapted from SWEN20003 project 1 solution
  */
 public class Trip {
     private final Passenger PASSENGER;

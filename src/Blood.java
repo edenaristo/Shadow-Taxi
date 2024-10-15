@@ -1,10 +1,12 @@
-import bagel.Font;
 import bagel.Image;
-import bagel.Input;
-import bagel.Keys;
 
 import java.util.Properties;
 
+
+/**
+ * The Blood class represents a particle effect in the game that simulates blood.
+ * It extends the Particle class and uses properties to initialize its image and duration.
+ */
 public class Blood extends Particle{
 
     public Blood(int x, int y, Properties props) {
