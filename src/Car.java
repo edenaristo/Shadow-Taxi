@@ -11,8 +11,13 @@ public class  Car extends GameObject{
     protected float damage;
     protected int speedY;
 
-    private Smoke smoke;
-    private final Properties GAME_PROPS;
+    protected Smoke smoke;
+    protected final Properties GAME_PROPS;
+
+    protected int timeoutTimer;
+    protected final int TIMEOUT_FRAME = 200;
+    protected final int TIMEOUT_ANIMATION_FRAME = 10;
+    protected boolean timeoutPositionOnTop;
 
     public Car(Properties props) {
 
@@ -79,8 +84,22 @@ public class  Car extends GameObject{
      * @param input The current mouse/keyboard input.
      */
     public void update(Input input) {
-        adjustToInputMovement(input);
-        move();
+
+        if (timeoutTimer >= TIMEOUT_FRAME - TIMEOUT_ANIMATION_FRAME) {
+            // timeout animation
+            if (timeoutPositionOnTop) {
+                y--;
+            } else {
+                y++;
+            }
+        } else {
+            // general movement
+            if(input != null) {
+                adjustToInputMovement(input);
+                move();
+            }
+        }
+
         draw();
 
         if (smoke != null) {
@@ -89,6 +108,8 @@ public class  Car extends GameObject{
                 smoke = null;
             }
         }
+
+        timeoutTimer--;
     }
 
     /**
@@ -102,5 +123,14 @@ public class  Car extends GameObject{
     public void hit(float damage) {
         super.hit(damage);
         smoke = new Smoke(this.x, this.y, GAME_PROPS);
+    }
+
+    @Override
+    public void collide(GameObject object) {
+        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && timeoutTimer <= 0 && object != this) {
+            object.hit(damage);
+            timeoutTimer = TIMEOUT_FRAME;
+            timeoutPositionOnTop = (this.y < object.y);
+        }
     }
 }

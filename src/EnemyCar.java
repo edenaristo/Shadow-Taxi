@@ -18,19 +18,6 @@ public class EnemyCar extends Car {
     }
 
     /**
-     * Update the GameObject object's movement states based on the input.
-     * Render the game object into the screen.
-     * @param input The current mouse/keyboard input.
-     */
-    public void update(Input input) {
-        if(input != null) {
-            adjustToInputMovement(input);
-        }
-        move();
-        draw();
-    }
-
-    /**
      * Check if it is valid to spawn car using a randomized number
      */
     public static boolean canSpawnCar() {

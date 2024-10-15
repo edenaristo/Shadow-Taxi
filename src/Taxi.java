@@ -27,6 +27,10 @@ public class Taxi extends GameObject{
     private final int TIMEOUT_ANIMATION_FRAME = 10;
     private boolean timeoutPositionOnTop;
 
+    private int driverSpeed;
+
+    private Image damagedImage;
+
     public Taxi(int x, int y, int maxTripCount, Properties props) {
         this.x = x;
         this.y = y;
@@ -35,9 +39,14 @@ public class Taxi extends GameObject{
         this.SPEED_X = Integer.parseInt(props.getProperty("gameObjects.taxi.speedX"));
         this.image = new Image(props.getProperty("gameObjects.taxi.image"));
         this.radius = Float.parseFloat(props.getProperty("gameObjects.taxi.radius"));
+        this.health = Float.parseFloat(props.getProperty("gameObjects.taxi.health"));
+
         GAME_PROPS = props;
         smoke = null;
         timeoutTimer = 0;
+
+        damagedImage = new Image(props.getProperty("gameObjects.taxi.damagedImage"));
+        driverSpeed = Integer.parseInt(props.getProperty("gameObjects.taxi.speedY"));
     }
 
     public boolean isMovingY() {
@@ -88,11 +97,14 @@ public class Taxi extends GameObject{
             } else {
                 y++;
             }
-        } else {
+        } else if (isAlive){
             // general movement
             if(input != null) {
                 adjustToInputMovement(input);
             }
+        } else {
+            deathAnimation();
+            adjustToInputMovementDead(input);
         }
         // if the taxi has coin power, apply the effect of the coin on the priority of the passenger
         // (See the logic in TravelPlan class)
@@ -113,6 +125,7 @@ public class Taxi extends GameObject{
         }
 
         draw();
+        checkLife();
 
         // the flag of the current trip renders to the screen
         if(tripCount > 0) {
@@ -161,6 +174,12 @@ public class Taxi extends GameObject{
         }
     }
 
+    public void adjustToInputMovementDead(Input input) {
+        if (input.isDown(Keys.UP)) {
+            y += driverSpeed;
+        }
+    }
+
     public void collectPower(Coin coin) {
         coinPower = coin;
     }
@@ -187,10 +206,14 @@ public class Taxi extends GameObject{
 
     @Override
     public void collide(GameObject object) {
-        if (isAlive && this.hasCollidedWith(object) && timeoutTimer <= 0) {
+        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && timeoutTimer <= 0) {
             object.hit(damage);
             timeoutTimer = TIMEOUT_FRAME;
             timeoutPositionOnTop = (this.y < object.y);
         }
+    }
+
+    private void deathAnimation() {
+        image = damagedImage;
     }
 }

@@ -43,7 +43,7 @@ public class Driver extends GameObject{
             adjustToInputMovement(input);
         }
 
-        if (isOutside) {
+        if (true) {
             draw();
         }
     }

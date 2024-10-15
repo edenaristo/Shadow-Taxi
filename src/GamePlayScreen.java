@@ -304,34 +304,34 @@ public class GamePlayScreen extends Screen{
         }
 
         // Car
-//        for (Car car : cars) {
-//            car.collide(taxi);
-//            car.collide(driver);
-//            for (EnemyCar enemyCar : enemyCars) {
-//                car.collide(enemyCar);
-//            }
-//            for (Car car2 : cars) {
-//                car.collide(car2);
-//            }
+        for (Car car : cars) {
+            car.collide(taxi);
+           car.collide(driver);
+            for (EnemyCar enemyCar : enemyCars) {
+                car.collide(enemyCar);
+            }
+            for (Car car2 : cars) {
+                car.collide(car2);
+            }
 //            for (Passenger passenger : passengers) {
 //                car.collide(passenger);
 //            }
-//        }
+        }
 //
-//        // EnemyCar
-//        for (EnemyCar enemyCar : enemyCars) {
-//            enemyCar.collide(taxi);
-//            enemyCar.collide(driver);
-//            for (EnemyCar enemyCar2 : enemyCars) {
-//                enemyCar.collide(enemyCar2);
-//            }
-//            for (Car car : cars) {
-//                enemyCar.collide(car);
-//            }
+        // EnemyCar
+        for (EnemyCar enemyCar : enemyCars) {
+            enemyCar.collide(taxi);
+            enemyCar.collide(driver);
+            for (EnemyCar enemyCar2 : enemyCars) {
+                enemyCar.collide(enemyCar2);
+            }
+            for (Car car : cars) {
+                enemyCar.collide(car);
+            }
 //            for (Passenger passenger : passengers) {
 //                enemyCar.collide(passenger);
 //            }
-//        }
+        }
 
         displayInfo();
 

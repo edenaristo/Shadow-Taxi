@@ -33,7 +33,7 @@ public abstract class GameObject {
     }
 
     public void collide(GameObject object) {
-        if (isAlive && this.hasCollidedWith(object)){
+        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && object != this){
             object.hit(damage);
             this.hasCollided = true;
         }
