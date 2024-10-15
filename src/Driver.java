@@ -11,6 +11,10 @@ public class Driver extends GameObject{
     private boolean isMovingX;
     private boolean isOutside;
 
+    final Properties GAME_PROPS;
+
+    private Blood blood;
+
 
     public Driver(int x, int y, Properties props) {
         this.x = x;
@@ -22,6 +26,8 @@ public class Driver extends GameObject{
         this.speedY = Integer.parseInt(props.getProperty("gameObjects.driver.walkSpeedY"));
         this.image = new Image(props.getProperty("gameObjects.driver.image"));
         this.radius = Float.parseFloat(props.getProperty("gameObjects.driver.radius"));
+        this.health = Float.parseFloat(props.getProperty("gameObjects.driver.health"));
+        GAME_PROPS = props;
     }
 
     public boolean isMovingY() {
@@ -45,6 +51,17 @@ public class Driver extends GameObject{
 
         if (isOutside) {
             draw();
+        }
+
+        if (isAlive) {
+            checkLife();
+        }
+
+        if (blood != null) {
+            blood.update(input);
+            if (!blood.isAlive()) {
+                blood = null;
+            }
         }
     }
 
@@ -88,6 +105,19 @@ public class Driver extends GameObject{
             this.x = object.x;
             this.y = object.y;
             ((Taxi) object).driverGoesIn();
+        }
+    }
+
+
+    public void deathAnimation() {
+        blood = new Blood(this.x, this.y, GAME_PROPS);
+    }
+
+    @Override
+    public void checkLife() {
+        if (health <= 0) {
+            isAlive = false;
+            deathAnimation();
         }
     }
 }

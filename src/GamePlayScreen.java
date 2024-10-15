@@ -407,6 +407,11 @@ public class GamePlayScreen extends Screen{
             savedData = true;
             IOUtils.writeLineToFile(GAME_PROPS.getProperty("gameEnd.scoresFile"), PLAYER_NAME + "," + totalEarnings);
         }
+
+        // game is over if the driver is dead
+        if (!isGameOver) {
+            isGameOver = !driver.isAlive;
+        }
         return isGameOver;
     }
 
