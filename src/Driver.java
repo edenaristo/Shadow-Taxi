@@ -80,4 +80,14 @@ public class Driver extends GameObject{
     public void setOutside() {
         isOutside = true;
     }
+
+    @Override
+    public void collide(GameObject object) {
+        if (isAlive && object.isAlive() && this.hasCollidedWith(object) && object instanceof Taxi && isOutside){
+            isOutside = false;
+            this.x = object.x;
+            this.y = object.y;
+            ((Taxi) object).driverGoesIn();
+        }
+    }
 }

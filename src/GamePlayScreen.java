@@ -287,8 +287,8 @@ public class GamePlayScreen extends Screen{
         // COLLISION LOGIC: make a double loop for each of the gameobjects
 
         // Driver
-//        driver.collide(taxi);
-//
+        driver.collide(taxi);
+
         // Taxi
         for (EnemyCar enemyCar : enemyCars) {
             taxi.collide(enemyCar);

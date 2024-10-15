@@ -11,13 +11,13 @@ public class Taxi extends GameObject{
 
     private static Trip[] TRIPS;
     private static int tripCount;
+    private static Trip trip;
 
     private final int SPEED_X;
     private boolean isMovingY;
     private boolean isMovingX;
 
     private Coin coinPower;
-    private static Trip trip;
 
     private Smoke smoke;
     private Fire fire;
@@ -36,7 +36,9 @@ public class Taxi extends GameObject{
     public Taxi(int x, int y, int maxTripCount, Properties props) {
         this.x = x;
         this.y = y;
-        TRIPS = new Trip[maxTripCount];
+        if (TRIPS == null) {
+            TRIPS = new Trip[maxTripCount];
+        }
 
         this.SPEED_X = Integer.parseInt(props.getProperty("gameObjects.taxi.speedX"));
         this.image = new Image(props.getProperty("gameObjects.taxi.image"));
@@ -132,13 +134,14 @@ public class Taxi extends GameObject{
         draw();
         if (isAlive) {
             checkLife();
-        }
-
-        // the flag of the current trip renders to the screen
-        if(tripCount > 0) {
-            Trip lastTrip = TRIPS[tripCount - 1];
-            if(!lastTrip.getPassenger().hasReachedFlag()) {
-                lastTrip.getTripEndFlag().update(input);
+            // the flag of the current trip renders to the screen
+            if(tripCount > 0) {
+                Trip lastTrip = TRIPS[tripCount - 1];
+                if (lastTrip != null) {
+                    if(!lastTrip.getPassenger().hasReachedFlag()) {
+                        lastTrip.getTripEndFlag().update(input);
+                    }
+                }
             }
         }
 
@@ -238,5 +241,9 @@ public class Taxi extends GameObject{
             isAlive = false;
             deathAnimation();
         }
+    }
+
+    public void driverGoesIn() {
+        isDriverless = false;
     }
 }
